@@ -1,0 +1,8 @@
+# C++
+/cpp/bins
+/cpp/objs
+/cpp/stream/pb
+
+# Golang
+/go/bins
+/go/stream/pb
