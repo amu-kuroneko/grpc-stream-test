@@ -24,23 +24,25 @@ LDFLAGS += \
 	-lboost_thread-mt \
 	-ldl
 
-EXECUTABLE_FILE = $(BINS_DIR)/stream-client
+EXECUTABLE_FILES = \
+	$(BINS_DIR)/stream_client \
+	$(BINS_DIR)/async_stream_client
 OUTPUTS_DIR = $(OBJECTS_DIR)
 TARGET_DIR = $(BINS_DIR)
-TARGET_FILE = $(EXECUTABLE_FILE)
 
 PROTO_OBJECTS = \
 	$(OUTPUTS_DIR)/pb/stream_test.pb.o \
 	$(OUTPUTS_DIR)/pb/stream_test.grpc.pb.o
 
-BUILD_OBJECTS = $(PROTO_OBJECTS) \
-	$(OUTPUTS_DIR)/main.o
+BUILD_OBJECTS = $(PROTO_OBJECTS)
 
 vpath %.proto $(PROTOS_DIR)
 
-build: $(BUILD_OBJECTS)
+build: $(EXECUTABLE_FILES);
+
+$(BINS_DIR)/%: $(BUILD_OBJECTS) $(OUTPUTS_DIR)/%.o
 	@mkdir -p $(TARGET_DIR)
-	$(GCC) $^ $(CXXFLAGS) $(LDFLAGS) -o $(TARGET_FILE)
+	$(GCC) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
 
 $(OUTPUTS_DIR)/%.o: $(SOURCES_DIR)/%.cc
 	@mkdir -p $(dir $@)
